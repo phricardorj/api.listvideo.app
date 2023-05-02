@@ -12,10 +12,8 @@ import lombok.NoArgsConstructor;
 @Schema(title = "Certificate Data Request")
 public class CertificateDataRequestDTO {
 
-    @NotBlank
-    private String courseName;
-    @NotBlank
+    @NotBlank(message = "courseId is required")
     private String courseId;
-    @NotBlank
+    @NotBlank(message = "duration is required")
     private String duration;
 }

@@ -66,7 +66,7 @@ public class CertificateResourceBuilder {
                 writeText(contentStream, "Certificamos que", TEXT_FONT, BLACK_COLOR, 30, 50, centerY + 60);
                 writeText(contentStream, user.getName(), STUDENT_NAME_FONT, RED_COLOR, 26, 50, centerY + 20);
                 writeText(contentStream, "concluiu o conteúdo da playlist do YouTube", TEXT_FONT, BLACK_COLOR, 18, 50, centerY - 30);
-                writeText(contentStream, "com ID: " + certificateDataRequestDTO.getCourseName() + " com carga horária", TEXT_FONT, BLACK_COLOR, 18, 50, centerY - 55);
+                writeText(contentStream, "com ID: " + certificateDataRequestDTO.getCourseId() + " com carga horária", TEXT_FONT, BLACK_COLOR, 18, 50, centerY - 55);
                 writeText(contentStream, "de "+ certificateDataRequestDTO.getDuration() +" em " + dateTime + ".", TEXT_FONT, BLACK_COLOR, 18, 50, centerY - 80);
             }
 
