@@ -99,6 +99,10 @@ public class UserAuthenticationService implements UserDetailsService {
         return (User) userDetails;
     }
 
+    public UserResponseDTO getCurrentUserDTO() {
+        return userResponseMapper.from(getCurrentUser());
+    }
+
     public UserResponseDTO activateAccount(UUID id) {
         return repository.findByIdAndStatusFalse(id)
                 .map(user -> {

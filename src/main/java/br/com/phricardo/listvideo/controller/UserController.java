@@ -1,6 +1,6 @@
 package br.com.phricardo.listvideo.controller;
 
-import br.com.phricardo.listvideo.model.User;
+import br.com.phricardo.listvideo.dto.response.UserResponseDTO;
 import br.com.phricardo.listvideo.service.UserAuthenticationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ public class UserController {
     private final UserAuthenticationService userAuthenticationService;
 
     @GetMapping
-    public User getUser() {
-        return userAuthenticationService.getCurrentUser();
+    public UserResponseDTO getCurrentAuthenticatedUser() {
+        return userAuthenticationService.getCurrentUserDTO();
     }
 }

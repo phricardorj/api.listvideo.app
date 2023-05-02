@@ -39,6 +39,8 @@ public class User implements UserDetails {
     private String password;
     @Column(nullable = false, columnDefinition = "boolean default false")
     private Boolean status;
+    @Column(nullable = false, columnDefinition = "boolean default false")
+    private Boolean isVerifiedAccount;
 
     @CreatedDate
     private LocalDateTime createdAt;
