@@ -19,7 +19,6 @@ import br.com.phricardo.listvideo.service.email.EmailSender;
 import br.com.phricardo.listvideo.service.email.EmailTemplateBuilder;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.NoSuchElementException;
-import java.util.UUID;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

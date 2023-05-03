@@ -7,7 +7,6 @@ import br.com.phricardo.listvideo.dto.response.UserResponseDTO;
 import br.com.phricardo.listvideo.service.UserAuthenticationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
