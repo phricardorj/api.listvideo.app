@@ -40,6 +40,8 @@ public class SecurityConfiguration {
         .permitAll()
         .requestMatchers(HttpMethod.GET, "/api/v1/user/{username}")
         .permitAll()
+        .requestMatchers("/actuator/**")
+        .permitAll()
         .anyRequest()
         .authenticated()
         .and()

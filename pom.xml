@@ -85,6 +85,12 @@
 			<version>${org.apache.pdfbox.version}</version>
 		</dependency>
 
+		<!--	SPRING ACTUATOR	-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
 		<!--	SPRING TEST	-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
