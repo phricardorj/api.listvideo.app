@@ -1,5 +1,7 @@
 package br.com.phricardo.listvideo.model;
 
+import static jakarta.persistence.GenerationType.IDENTITY;
+
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -26,30 +28,46 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class User implements UserDetails {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private UUID id;
+  @Column(name = "id")
+  @GeneratedValue(strategy = IDENTITY)
+  private Long id;
 
-  @Column(nullable = false)
+  @Column(name = "resource_id", nullable = false)
+  private String resourceId;
+
+  @Column(name = "name", nullable = false)
   private String name;
 
-  @Column(nullable = false, unique = true)
+  @Column(name = "email", nullable = false, unique = true)
   private String email;
 
-  @Column(nullable = false, unique = true)
+  @Column(name = "username", nullable = false, unique = true)
   private String username;
 
-  @Column(nullable = false)
+  @Column(name = "password", nullable = false)
   private String password;
 
-  @Column(nullable = false, columnDefinition = "boolean default false")
+  @Column(name = "status", nullable = false, columnDefinition = "boolean default false")
   private Boolean status;
 
-  @Column(nullable = false, columnDefinition = "boolean default false")
+  @Column(
+      name = "is_verified_account",
+      nullable = false,
+      columnDefinition = "boolean default false")
   private Boolean isVerifiedAccount;
 
-  @CreatedDate private LocalDateTime createdAt;
+  @CreatedDate
+  @Column(name = "created_at")
+  private LocalDateTime createdAt;
 
-  @LastModifiedDate private LocalDateTime updatedAt;
+  @LastModifiedDate
+  @Column(name = "updated_at")
+  private LocalDateTime updatedAt;
+
+  @PrePersist
+  private void generateResourceId() {
+    this.resourceId = UUID.randomUUID().toString();
+  }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

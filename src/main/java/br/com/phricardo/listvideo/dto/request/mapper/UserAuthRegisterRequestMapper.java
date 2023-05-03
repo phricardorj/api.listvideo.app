@@ -14,6 +14,7 @@ public abstract class UserAuthRegisterRequestMapper {
   @Autowired private PasswordEncoder passwordEncoder;
 
   @Mapping(target = "id", ignore = true)
+  @Mapping(target = "resourceId", ignore = true)
   @Mapping(target = "status", constant = "false")
   @Mapping(target = "isVerifiedAccount", constant = "false")
   @Mapping(source = "email", target = "email", qualifiedByName = "toLowerCase")

@@ -117,9 +117,9 @@ public class UserAuthenticationService implements UserDetailsService {
                 new EntityNotFoundException(format("User with username %s not found.", username)));
   }
 
-  public UserResponseDTO activateAccount(UUID id) {
+  public UserResponseDTO activateAccount(UUID resourceId) {
     return repository
-        .findByIdAndStatusFalse(id)
+        .findByResourceIdAndStatusFalse(resourceId)
         .map(
             user -> {
               user.setStatus(true);
@@ -131,8 +131,8 @@ public class UserAuthenticationService implements UserDetailsService {
             () ->
                 new EntityNotFoundException(
                     format(
-                        "Could not activate account: User with ID %d not found or account already activated.",
-                        id)));
+                        "Could not activate account: User with ID %s not found or account already activated.",
+                        resourceId)));
   }
 
   private void sendAccountVerificationEmail(@NonNull User user) {

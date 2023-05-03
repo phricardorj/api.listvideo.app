@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Schema(title = "User Response")
 public class UserResponseDTO {
 
+  private String resourceId;
   private String name;
   private String email;
   private String username;
