@@ -31,7 +31,7 @@ public class AuthenticationController {
     return service.loginUser(loginRequestDTO, authenticationManager);
   }
 
-  @PatchMapping("/activate-account/{id}")
+  @PatchMapping("/activate-account/{resourceId}")
   public UserResponseDTO activeAccount(@PathVariable String resourceId) {
     return service.activateAccount(resourceId);
   }
