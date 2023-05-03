@@ -9,7 +9,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface CertificateDataRequestMapper {
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(source = "user", target = "user")
-    Certificate from(CertificateDataRequestDTO certificateDataRequestDTO, User user);
+  @Mapping(target = "id", ignore = true)
+  @Mapping(source = "user", target = "user")
+  Certificate from(CertificateDataRequestDTO certificateDataRequestDTO, User user);
 }

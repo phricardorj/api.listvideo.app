@@ -1,5 +1,7 @@
 package br.com.phricardo.listvideo.service;
 
+import static java.util.Objects.isNull;
+
 import br.com.phricardo.listvideo.dto.request.CertificateDataRequestDTO;
 import br.com.phricardo.listvideo.dto.request.mapper.CertificateDataRequestMapper;
 import br.com.phricardo.listvideo.model.Certificate;
@@ -12,36 +14,35 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-
-import static java.util.Objects.isNull;
-
 @Service
 @RequiredArgsConstructor
 public class CertificateService {
 
-    private final CertificateResourceBuilder certificateResourceBuilder;
-    private final CertificateRepository certificateRepository;
-    private final CertificateDataRequestMapper certificateDataRequestMapper;
-    private final UserAuthenticationService userAuthenticationService;
+  private final CertificateResourceBuilder certificateResourceBuilder;
+  private final CertificateRepository certificateRepository;
+  private final CertificateDataRequestMapper certificateDataRequestMapper;
+  private final UserAuthenticationService userAuthenticationService;
 
-    public ResponseEntity<Resource> generateCertificate(@NonNull final CertificateDataRequestDTO certificateDataRequestDTO) {
-        final var user = userAuthenticationService.getCurrentUser();
-        final var new_certificate = certificateDataRequestMapper.from(certificateDataRequestDTO, user);
-        Certificate certificate = certificateRepository.findByUserIdAndCourseId(user.getId(), new_certificate.getCourseId());
+  public ResponseEntity<Resource> generateCertificate(
+      @NonNull final CertificateDataRequestDTO certificateDataRequestDTO) {
+    final var user = userAuthenticationService.getCurrentUser();
+    final var new_certificate = certificateDataRequestMapper.from(certificateDataRequestDTO, user);
+    Certificate certificate =
+        certificateRepository.findByUserIdAndCourseId(user.getId(), new_certificate.getCourseId());
 
-        if (isNull(certificate))
-            certificate = certificateRepository.save(new_certificate);
+    if (isNull(certificate)) certificate = certificateRepository.save(new_certificate);
 
-        return certificateResourceBuilder.buildCertificateResource(certificate);
-    }
+    return certificateResourceBuilder.buildCertificateResource(certificate);
+  }
 
-    public ResponseEntity<Resource> getCertificate(String courseId) {
-        final var user = userAuthenticationService.getCurrentUser();
-        Certificate certificate = certificateRepository.findByUserIdAndCourseId(user.getId(), courseId);
+  public ResponseEntity<Resource> getCertificate(String courseId) {
+    final var user = userAuthenticationService.getCurrentUser();
+    Certificate certificate = certificateRepository.findByUserIdAndCourseId(user.getId(), courseId);
 
-        if (isNull(certificate))
-            throw new EntityNotFoundException("User does not have a certificate with this course id: " + courseId);
+    if (isNull(certificate))
+      throw new EntityNotFoundException(
+          "User does not have a certificate with this course id: " + courseId);
 
-        return certificateResourceBuilder.buildCertificateResource(certificate);
-    }
+    return certificateResourceBuilder.buildCertificateResource(certificate);
+  }
 }

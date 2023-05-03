@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @Schema(title = "User Response")
 public class UserResponseDTO {
 
-    private String name;
-    private String email;
-    private String username;
-    private Boolean status;
-    private Boolean isVerifiedAccount;
+  private String name;
+  private String email;
+  private String username;
+  private Boolean status;
+  private Boolean isVerifiedAccount;
 }

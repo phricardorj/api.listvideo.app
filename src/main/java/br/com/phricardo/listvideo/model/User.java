@@ -1,6 +1,10 @@
 package br.com.phricardo.listvideo.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,11 +16,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.UUID;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,50 +25,54 @@ import java.util.UUID;
 @EntityListeners(AuditingEntityListener.class)
 public class User implements UserDetails {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
-    @Column(nullable = false)
-    private String name;
-    @Column(nullable = false, unique = true)
-    private String email;
-    @Column(nullable = false, unique = true)
-    private String username;
-    @Column(nullable = false)
-    private String password;
-    @Column(nullable = false, columnDefinition = "boolean default false")
-    private Boolean status;
-    @Column(nullable = false, columnDefinition = "boolean default false")
-    private Boolean isVerifiedAccount;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private UUID id;
 
-    @CreatedDate
-    private LocalDateTime createdAt;
+  @Column(nullable = false)
+  private String name;
 
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
+  @Column(nullable = false, unique = true)
+  private String email;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
-    }
+  @Column(nullable = false, unique = true)
+  private String username;
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+  @Column(nullable = false)
+  private String password;
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
+  @Column(nullable = false, columnDefinition = "boolean default false")
+  private Boolean status;
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
+  @Column(nullable = false, columnDefinition = "boolean default false")
+  private Boolean isVerifiedAccount;
 
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
+  @CreatedDate private LocalDateTime createdAt;
+
+  @LastModifiedDate private LocalDateTime updatedAt;
+
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
+  }
+
+  @Override
+  public boolean isAccountNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isAccountNonLocked() {
+    return true;
+  }
+
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return true;
+  }
+
+  @Override
+  public boolean isEnabled() {
+    return true;
+  }
 }

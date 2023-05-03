@@ -7,6 +7,6 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface TokenResponseMapper {
 
-    @Mapping(target = "token", source = "token")
-    TokenResponseDTO from(String token);
+  @Mapping(target = "token", source = "token")
+  TokenResponseDTO from(String token);
 }

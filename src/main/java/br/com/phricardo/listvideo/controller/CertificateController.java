@@ -15,15 +15,16 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "Certificate", description = "Endpoints for certificates")
 public class CertificateController {
 
-    private final CertificateService certificateService;
+  private final CertificateService certificateService;
 
-    @GetMapping("/{courseId}")
-    public ResponseEntity<Resource> getCertificateByCourseId(@PathVariable String courseId) {
-        return certificateService.getCertificate(courseId);
-    }
+  @GetMapping("/{courseId}")
+  public ResponseEntity<Resource> getCertificateByCourseId(@PathVariable String courseId) {
+    return certificateService.getCertificate(courseId);
+  }
 
-    @PostMapping
-    public ResponseEntity<Resource> generateCertificate(@RequestBody @Valid CertificateDataRequestDTO certificateDataRequestDTO) {
-        return certificateService.generateCertificate(certificateDataRequestDTO);
-    }
+  @PostMapping
+  public ResponseEntity<Resource> generateCertificate(
+      @RequestBody @Valid CertificateDataRequestDTO certificateDataRequestDTO) {
+    return certificateService.generateCertificate(certificateDataRequestDTO);
+  }
 }

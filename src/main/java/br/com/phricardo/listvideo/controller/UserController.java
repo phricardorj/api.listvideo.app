@@ -15,15 +15,15 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "User", description = "Endpoints for user")
 public class UserController {
 
-    private final UserAuthenticationService userAuthenticationService;
+  private final UserAuthenticationService userAuthenticationService;
 
-    @GetMapping
-    public UserResponseDTO getCurrentAuthenticatedUser() {
-        return userAuthenticationService.getCurrentUserDTO();
-    }
+  @GetMapping
+  public UserResponseDTO getCurrentAuthenticatedUser() {
+    return userAuthenticationService.getCurrentUserDTO();
+  }
 
-    @GetMapping("/{username}")
-    public UserResponseDTO getUserByUsername(@PathVariable String username) {
-        return userAuthenticationService.getUserByUsername(username);
-    }
+  @GetMapping("/{username}")
+  public UserResponseDTO getUserByUsername(@PathVariable String username) {
+    return userAuthenticationService.getUserByUsername(username);
+  }
 }

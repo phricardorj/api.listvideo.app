@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Schema(title = "Token Response")
 public class TokenResponseDTO {
-    private String token;
+  private String token;
 }

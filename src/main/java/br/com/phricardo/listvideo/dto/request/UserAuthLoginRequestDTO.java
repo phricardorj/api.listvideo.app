@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 @Schema(title = "Auth Login Request")
 public class UserAuthLoginRequestDTO {
 
-    @NotBlank(message = "login is required")
-    private String login;
+  @NotBlank(message = "login is required")
+  private String login;
 
-    @NotBlank(message = "password is required")
-    @Schema(description = "Password", example = "Ab*1example")
-    private String password;
+  @NotBlank(message = "password is required")
+  @Schema(description = "Password", example = "Ab*1example")
+  private String password;
 }

@@ -1,5 +1,9 @@
 package br.com.phricardo.listvideo.service;
 
+import static java.lang.String.format;
+import static java.util.Optional.of;
+import static java.util.Optional.ofNullable;
+
 import br.com.phricardo.listvideo.dto.request.UserAuthLoginRequestDTO;
 import br.com.phricardo.listvideo.dto.request.UserAuthRegisterRequestDTO;
 import br.com.phricardo.listvideo.dto.request.mapper.UserAuthRegisterRequestMapper;
@@ -14,6 +18,8 @@ import br.com.phricardo.listvideo.repository.UserAuthRepository;
 import br.com.phricardo.listvideo.service.email.EmailSender;
 import br.com.phricardo.listvideo.service.email.EmailTemplateBuilder;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.NoSuchElementException;
+import java.util.UUID;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,111 +32,123 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.NoSuchElementException;
-import java.util.UUID;
-
-import static java.lang.String.format;
-import static java.util.Optional.of;
-import static java.util.Optional.ofNullable;
-
 @Service
 @RequiredArgsConstructor
 public class UserAuthenticationService implements UserDetailsService {
 
-    private final UserAuthRepository repository;
-    private final UserAuthRegisterRequestMapper registerRequestMapper;
-    private final TokenResponseMapper tokenResponseMapper;
-    private final UserResponseMapper userResponseMapper;
-    private final TokenService tokenService;
-    private final EmailSender emailSender;
-    private final EmailTemplateBuilder emailTemplateBuilder;
+  private final UserAuthRepository repository;
+  private final UserAuthRegisterRequestMapper registerRequestMapper;
+  private final TokenResponseMapper tokenResponseMapper;
+  private final UserResponseMapper userResponseMapper;
+  private final TokenService tokenService;
+  private final EmailSender emailSender;
+  private final EmailTemplateBuilder emailTemplateBuilder;
 
-    @Value("${app.account_activation_url}")
-    private String ACCOUNT_ACTIVATION_URL;
+  @Value("${app.account_activation_url}")
+  private String ACCOUNT_ACTIVATION_URL;
 
-    @Override
-    public UserDetails loadUserByUsername(final String login) throws UsernameNotFoundException {
-        return repository.findByEmailOrUsername(login, login);
-    }
+  @Override
+  public UserDetails loadUserByUsername(final String login) throws UsernameNotFoundException {
+    return repository.findByEmailOrUsername(login, login);
+  }
 
-    public UserResponseDTO registerUser(@NonNull final UserAuthRegisterRequestDTO registerRequestDTO) {
-        return of(registerRequestDTO)
-                .map(registerRequestMapper::from)
-                .map(repository::save)
-                .map(user -> {
-                    sendAccountVerificationEmail(user);
-                    return user;
-                })
-                .map(userResponseMapper::from)
-                .orElseThrow(() -> new NoSuchElementException("User registration request cannot be null"));
-    }
+  public UserResponseDTO registerUser(
+      @NonNull final UserAuthRegisterRequestDTO registerRequestDTO) {
+    return of(registerRequestDTO)
+        .map(registerRequestMapper::from)
+        .map(repository::save)
+        .map(
+            user -> {
+              sendAccountVerificationEmail(user);
+              return user;
+            })
+        .map(userResponseMapper::from)
+        .orElseThrow(() -> new NoSuchElementException("User registration request cannot be null"));
+  }
 
-    public TokenResponseDTO loginUser(@NonNull final UserAuthLoginRequestDTO loginRequestDTO, final AuthenticationManager manager) {
-        final var login = loginRequestDTO.getLogin();
-        final var password = loginRequestDTO.getPassword();
-        final var existsByLogin = repository.existsByEmailOrUsername(login, login);
+  public TokenResponseDTO loginUser(
+      @NonNull final UserAuthLoginRequestDTO loginRequestDTO, final AuthenticationManager manager) {
+    final var login = loginRequestDTO.getLogin();
+    final var password = loginRequestDTO.getPassword();
+    final var existsByLogin = repository.existsByEmailOrUsername(login, login);
 
-        return of(existsByLogin)
-                .filter(existsUser -> existsUser)
-                .map(existsUser -> new UsernamePasswordAuthenticationToken(login, password))
-                .map(token -> ofNullable(manager.authenticate(token))
-                        .map(auth -> {
-                            final var principal = auth.getPrincipal();
-                            return (User) principal;
+    return of(existsByLogin)
+        .filter(existsUser -> existsUser)
+        .map(existsUser -> new UsernamePasswordAuthenticationToken(login, password))
+        .map(
+            token ->
+                ofNullable(manager.authenticate(token))
+                    .map(
+                        auth -> {
+                          final var principal = auth.getPrincipal();
+                          return (User) principal;
                         })
-                        .map(user -> {
-                            if(!user.getStatus())
-                                throw new EmailNotVerifiedException();
-                            return user;
+                    .map(
+                        user -> {
+                          if (!user.getStatus()) throw new EmailNotVerifiedException();
+                          return user;
                         })
-                        .map(tokenService::generate)
-                        .map(tokenResponseMapper::from)
-                        .orElseThrow(LoginException::new))
-                .orElseThrow(LoginException::new);
-    }
+                    .map(tokenService::generate)
+                    .map(tokenResponseMapper::from)
+                    .orElseThrow(LoginException::new))
+        .orElseThrow(LoginException::new);
+  }
 
-    public UserDetails getCurrentUserDetails() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return (UserDetails) authentication.getPrincipal();
-    }
+  public UserDetails getCurrentUserDetails() {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    return (UserDetails) authentication.getPrincipal();
+  }
 
-    public User getCurrentUser() {
-        UserDetails userDetails = getCurrentUserDetails();
-        return (User) userDetails;
-    }
+  public User getCurrentUser() {
+    UserDetails userDetails = getCurrentUserDetails();
+    return (User) userDetails;
+  }
 
-    public UserResponseDTO getCurrentUserDTO() {
-        return userResponseMapper.from(getCurrentUser());
-    }
+  public UserResponseDTO getCurrentUserDTO() {
+    return userResponseMapper.from(getCurrentUser());
+  }
 
-    public UserResponseDTO getUserByUsername(String username) {
-        return repository.findByUsername(username)
-                .map(userResponseMapper::from)
-                .orElseThrow(() -> new EntityNotFoundException(format("User with username %s not found.", username)));
-    }
+  public UserResponseDTO getUserByUsername(String username) {
+    return repository
+        .findByUsername(username)
+        .map(userResponseMapper::from)
+        .orElseThrow(
+            () ->
+                new EntityNotFoundException(format("User with username %s not found.", username)));
+  }
 
-    public UserResponseDTO activateAccount(UUID id) {
-        return repository.findByIdAndStatusFalse(id)
-                .map(user -> {
-                    user.setStatus(true);
-                    return user;
-                })
-                .map(repository::save)
-                .map(userResponseMapper::from)
-                .orElseThrow(() -> new EntityNotFoundException(format("Could not activate account: User with ID %d not found or account already activated.", id)));
-    }
+  public UserResponseDTO activateAccount(UUID id) {
+    return repository
+        .findByIdAndStatusFalse(id)
+        .map(
+            user -> {
+              user.setStatus(true);
+              return user;
+            })
+        .map(repository::save)
+        .map(userResponseMapper::from)
+        .orElseThrow(
+            () ->
+                new EntityNotFoundException(
+                    format(
+                        "Could not activate account: User with ID %d not found or account already activated.",
+                        id)));
+  }
 
-    private void sendAccountVerificationEmail(@NonNull User user) {
-        emailSender.setRecipient(user.getEmail())
-                .setSubject("ListVideo - Verify Your Account")
-                .setBody(emailTemplateBuilder
-                        .setTemplate("email-template.html")
-                        .setName(user.getName())
-                        .setBody("Welcome to ListVideo!<br> Before you start enjoying everything we have to offer, remember to activate your account.")
-                        .setLinkText("Activate my account")
-                        .setLinkUrl(String.format("%s%s", ACCOUNT_ACTIVATION_URL, user.getId()))
-                        .build(),
-                        true)
-                .send();
-    }
+  private void sendAccountVerificationEmail(@NonNull User user) {
+    emailSender
+        .setRecipient(user.getEmail())
+        .setSubject("ListVideo - Verify Your Account")
+        .setBody(
+            emailTemplateBuilder
+                .setTemplate("email-template.html")
+                .setName(user.getName())
+                .setBody(
+                    "Welcome to ListVideo!<br> Before you start enjoying everything we have to offer, remember to activate your account.")
+                .setLinkText("Activate my account")
+                .setLinkUrl(String.format("%s%s", ACCOUNT_ACTIVATION_URL, user.getId()))
+                .build(),
+            true)
+        .send();
+  }
 }
