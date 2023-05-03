@@ -8,6 +8,7 @@
 - MySQL 8.0 / Flyway
 - Maven
 - [mapstruct](https://mapstruct.org/)
+- [Apache PDFBox® - A Java PDF Library](https://pdfbox.apache.org/)
 - [JUnit 5](https://junit.org/junit5/)
 - [SpringDoc OpenAPI 3](https://springdoc.org/) and Swagger UI 
 - Docker
