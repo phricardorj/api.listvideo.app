@@ -1,7 +1,8 @@
 package br.com.phricardo.listvideo.service.certificate;
 
-import br.com.phricardo.listvideo.dto.request.CertificateDataRequestDTO;
+import br.com.phricardo.listvideo.model.Certificate;
 import br.com.phricardo.listvideo.service.UserAuthenticationService;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.apache.pdfbox.io.IOUtils;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -45,7 +46,7 @@ public class CertificateResourceBuilder {
     private static final String FILE_NAME = "certificate";
     private static final String BACKGROUND_IMAGE_PATH = "/templates/certificate_background.jpg";
 
-    public ResponseEntity<Resource> buildCertificateResource(CertificateDataRequestDTO certificateDataRequestDTO) {
+    public ResponseEntity<Resource> buildCertificateResource(@NonNull Certificate certificate) {
         final var user = userAuthenticationService.getCurrentUser();
         final var dateTime =  LocalDate.now(java.time.ZoneId.of("America/Sao_Paulo"))
                 .format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
@@ -66,8 +67,8 @@ public class CertificateResourceBuilder {
                 writeText(contentStream, "Certificamos que", TEXT_FONT, BLACK_COLOR, 30, 50, centerY + 60);
                 writeText(contentStream, user.getName(), STUDENT_NAME_FONT, RED_COLOR, 26, 50, centerY + 20);
                 writeText(contentStream, "concluiu o conteúdo da playlist do YouTube", TEXT_FONT, BLACK_COLOR, 18, 50, centerY - 30);
-                writeText(contentStream, "com ID: " + certificateDataRequestDTO.getCourseId() + " com carga horária", TEXT_FONT, BLACK_COLOR, 18, 50, centerY - 55);
-                writeText(contentStream, "de "+ certificateDataRequestDTO.getDuration() +" em " + dateTime + ".", TEXT_FONT, BLACK_COLOR, 18, 50, centerY - 80);
+                writeText(contentStream, "com ID: " + certificate.getCourseId() + " com carga horária", TEXT_FONT, BLACK_COLOR, 18, 50, centerY - 55);
+                writeText(contentStream, "de "+ certificate.getDuration() +" em " + dateTime + ".", TEXT_FONT, BLACK_COLOR, 18, 50, centerY - 80);
             }
 
             final var byteArrayOutputStream = new ByteArrayOutputStream();
