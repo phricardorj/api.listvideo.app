@@ -146,7 +146,7 @@ public class UserAuthenticationService implements UserDetailsService {
                 .setBody(
                     "Welcome to ListVideo!<br> Before you start enjoying everything we have to offer, remember to activate your account.")
                 .setLinkText("Activate my account")
-                .setLinkUrl(String.format("%s%s", ACCOUNT_ACTIVATION_URL, user.getId()))
+                .setLinkUrl(String.format("%s%s", ACCOUNT_ACTIVATION_URL, user.getResourceId()))
                 .build(),
             true)
         .send();

@@ -33,7 +33,7 @@ public class AuthenticationController {
   }
 
   @PatchMapping("/activate-account/{id}")
-  public UserResponseDTO activeAccount(@PathVariable UUID id) {
-    return service.activateAccount(id);
+  public UserResponseDTO activeAccount(@PathVariable UUID resourceId) {
+    return service.activateAccount(resourceId);
   }
 }
