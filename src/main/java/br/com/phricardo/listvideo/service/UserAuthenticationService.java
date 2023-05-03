@@ -117,7 +117,7 @@ public class UserAuthenticationService implements UserDetailsService {
                 new EntityNotFoundException(format("User with username %s not found.", username)));
   }
 
-  public UserResponseDTO activateAccount(UUID resourceId) {
+  public UserResponseDTO activateAccount(String resourceId) {
     return repository
         .findByResourceIdAndStatusFalse(resourceId)
         .map(
