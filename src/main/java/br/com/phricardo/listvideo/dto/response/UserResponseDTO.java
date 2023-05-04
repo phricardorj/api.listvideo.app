@@ -15,6 +15,5 @@ public class UserResponseDTO {
   private String name;
   private String email;
   private String username;
-  private Boolean status;
   private Boolean isVerifiedAccount;
 }
