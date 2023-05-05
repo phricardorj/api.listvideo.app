@@ -107,9 +107,16 @@ public class UserAuthenticationService implements UserDetailsService {
     return userResponseMapper.from(getCurrentUser());
   }
 
-  public UserResponseDTO getUserByUsername(String username) {
+  public User getUserByUsername(String username) {
     return repository
         .findByUsername(username)
+        .orElseThrow(
+            () ->
+                new EntityNotFoundException(format("User with username %s not found.", username)));
+  }
+
+  public UserResponseDTO getUserResponseByUsername(String username) {
+    return of(getUserByUsername(username))
         .map(userResponseMapper::from)
         .orElseThrow(
             () ->

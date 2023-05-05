@@ -3,6 +3,7 @@ package br.com.phricardo.listvideo.service.certificate;
 import static java.util.Objects.requireNonNull;
 
 import br.com.phricardo.listvideo.model.Certificate;
+import br.com.phricardo.listvideo.model.User;
 import br.com.phricardo.listvideo.service.UserAuthenticationService;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -43,8 +44,8 @@ public class CertificateResourceBuilder {
   private static final String FILE_NAME = "certificate";
   private static final String BACKGROUND_IMAGE_PATH = "/templates/certificate_background.jpg";
 
-  public ResponseEntity<Resource> buildCertificateResource(@NonNull Certificate certificate) {
-    final var user = userAuthenticationService.getCurrentUser();
+  public ResponseEntity<Resource> buildCertificateResource(
+      @NonNull Certificate certificate, @NonNull User user) {
     final var dateTime =
         LocalDate.now(java.time.ZoneId.of("America/Sao_Paulo"))
             .format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));

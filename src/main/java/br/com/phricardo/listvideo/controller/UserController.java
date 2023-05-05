@@ -24,6 +24,6 @@ public class UserController {
 
   @GetMapping("/{username}")
   public UserResponseDTO getUserByUsername(@PathVariable String username) {
-    return userAuthenticationService.getUserByUsername(username);
+    return userAuthenticationService.getUserResponseByUsername(username);
   }
 }

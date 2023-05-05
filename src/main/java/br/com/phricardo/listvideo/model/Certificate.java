@@ -1,5 +1,8 @@
 package br.com.phricardo.listvideo.model;
 
+import static jakarta.persistence.FetchType.LAZY;
+import static jakarta.persistence.GenerationType.IDENTITY;
+
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -21,18 +24,33 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class Certificate {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private UUID id;
+  @Column(name = "id")
+  @GeneratedValue(strategy = IDENTITY)
+  private Long id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id")
+  @Column(name = "certificate_id", nullable = false)
+  private String certificateId;
+
+  @ManyToOne(fetch = LAZY)
+  @JoinColumn(name = "username", referencedColumnName = "username", nullable = false)
   private User user;
 
+  @Column(name = "course_id", nullable = false)
   private String courseId;
 
+  @Column(name = "duration", nullable = false)
   private String duration;
 
-  @CreatedDate private LocalDateTime createdAt;
+  @CreatedDate
+  @Column(name = "created_at", nullable = false)
+  private LocalDateTime createdAt;
 
-  @LastModifiedDate private LocalDateTime updatedAt;
+  @LastModifiedDate
+  @Column(name = "updated_at", nullable = false)
+  private LocalDateTime updatedAt;
+
+  @PrePersist
+  private void generateResourceId() {
+    this.certificateId = UUID.randomUUID().toString();
+  }
 }
