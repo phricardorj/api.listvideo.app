@@ -35,8 +35,8 @@ public class Certificate {
   @JoinColumn(name = "username", referencedColumnName = "username", nullable = false)
   private User user;
 
-  @Column(name = "course_id", nullable = false)
-  private String courseId;
+  @Column(name = "playlist_id", nullable = false)
+  private String playlistId;
 
   @Column(name = "duration", nullable = false)
   private String duration;
@@ -50,7 +50,7 @@ public class Certificate {
   private LocalDateTime updatedAt;
 
   @PrePersist
-  private void generateResourceId() {
-    this.certificateId = UUID.randomUUID().toString();
+  private void generateCertificateId() {
+    this.certificateId = UUID.randomUUID().toString().replace("-", "");
   }
 }

@@ -17,10 +17,10 @@ public class CertificateController {
 
   private final CertificateService certificateService;
 
-  @GetMapping("/{username}/{courseId}")
+  @GetMapping("/{username}/{certificateId}")
   public ResponseEntity<Resource> getCertificateByCourseId(
-      @PathVariable String courseId, @PathVariable String username) {
-    return certificateService.getCertificate(courseId, username);
+      @PathVariable String certificateId, @PathVariable String username) {
+    return certificateService.getCertificate(certificateId, username);
   }
 
   @PostMapping

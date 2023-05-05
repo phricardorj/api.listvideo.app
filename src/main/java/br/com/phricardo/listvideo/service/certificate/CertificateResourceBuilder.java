@@ -86,7 +86,7 @@ public class CertificateResourceBuilder {
             centerY - 30);
         writeText(
             contentStream,
-            "com ID: " + certificate.getCourseId() + " com carga horária",
+            "com ID: " + certificate.getPlaylistId() + " com carga horária",
             TEXT_FONT,
             BLACK_COLOR,
             18,

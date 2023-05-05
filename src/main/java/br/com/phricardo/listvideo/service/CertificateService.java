@@ -28,21 +28,22 @@ public class CertificateService {
     final var user = userAuthenticationService.getCurrentUser();
     final var new_certificate = certificateDataRequestMapper.from(certificateDataRequestDTO, user);
     Certificate certificate =
-        certificateRepository.findByCourseIdAndUsername(
-            new_certificate.getCourseId(), user.getUsername());
+        certificateRepository.findByPlaylistIdAndUsername(
+            new_certificate.getPlaylistId(), user.getUsername());
 
     if (isNull(certificate)) certificate = certificateRepository.save(new_certificate);
 
     return certificateResourceBuilder.buildCertificateResource(certificate, user);
   }
 
-  public ResponseEntity<Resource> getCertificate(String courseId, String username) {
+  public ResponseEntity<Resource> getCertificate(String certificateId, String username) {
     final var user = userAuthenticationService.getUserByUsername(username);
-    Certificate certificate = certificateRepository.findByCourseIdAndUsername(courseId, username);
+    Certificate certificate =
+        certificateRepository.findByCertificateIdAndUsername(certificateId, username);
 
     if (isNull(certificate))
       throw new EntityNotFoundException(
-          "User does not have a certificate with this course id: " + courseId);
+          "User does not have a certificate with id: " + certificateId);
 
     return certificateResourceBuilder.buildCertificateResource(certificate, user);
   }

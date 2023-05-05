@@ -40,7 +40,7 @@ public class SecurityConfiguration {
         .permitAll()
         .requestMatchers(HttpMethod.GET, "/api/v1/user/{username}")
         .permitAll()
-        .requestMatchers(HttpMethod.GET, "/api/v1/certificate/{username}/{courseId}")
+        .requestMatchers(HttpMethod.GET, "/api/v1/certificate/{username}/{certificateId}")
         .permitAll()
         .requestMatchers("/actuator/**")
         .permitAll()

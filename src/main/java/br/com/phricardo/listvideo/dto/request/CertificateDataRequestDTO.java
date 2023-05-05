@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class CertificateDataRequestDTO {
 
   @NotBlank(message = "courseId is required")
-  private String courseId;
+  private String playlistId;
 
   @NotBlank(message = "duration is required")
   private String duration;
