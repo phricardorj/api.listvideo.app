@@ -22,7 +22,7 @@ public class SpringDocConfiguration implements WebMvcConfigurer {
     return new Info()
         .title("ListVideo API")
         .description("Turning playlists into a powerful courses platform")
-        .version("1.0.0")
+        .version("v2")
         .contact(
             new Contact().url("https://www.phricardo.com.br/").email("contato@phricardo.com.br"));
   }

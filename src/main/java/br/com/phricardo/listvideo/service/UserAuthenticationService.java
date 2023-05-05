@@ -123,9 +123,9 @@ public class UserAuthenticationService implements UserDetailsService {
                 new EntityNotFoundException(format("User with username %s not found.", username)));
   }
 
-  public UserResponseDTO activateAccount(String resourceId) {
+  public UserResponseDTO activateAccount(String userId) {
     return repository
-        .findByResourceIdAndStatusFalse(resourceId)
+        .findByUserIdAndStatusFalse(userId)
         .map(
             user -> {
               user.setStatus(true);
@@ -138,7 +138,7 @@ public class UserAuthenticationService implements UserDetailsService {
                 new EntityNotFoundException(
                     format(
                         "Could not activate account: User with ID %s not found or account already activated.",
-                        resourceId)));
+                        userId)));
   }
 
   private void sendAccountVerificationEmail(@NonNull User user) {
@@ -152,7 +152,7 @@ public class UserAuthenticationService implements UserDetailsService {
                 .setBody(
                     "Welcome to ListVideo!<br> Before you start enjoying everything we have to offer, remember to activate your account.")
                 .setLinkText("Activate my account")
-                .setLinkUrl(String.format("%s%s", ACCOUNT_ACTIVATION_URL, user.getResourceId()))
+                .setLinkUrl(String.format("%s%s", ACCOUNT_ACTIVATION_URL, user.getUserId()))
                 .build(),
             true)
         .send();

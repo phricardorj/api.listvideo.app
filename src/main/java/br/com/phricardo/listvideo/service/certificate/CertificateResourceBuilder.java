@@ -10,7 +10,6 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import javax.imageio.ImageIO;
 import lombok.NonNull;
@@ -46,9 +45,9 @@ public class CertificateResourceBuilder {
 
   public ResponseEntity<Resource> buildCertificateResource(
       @NonNull Certificate certificate, @NonNull User user) {
-    final var dateTime =
-        LocalDate.now(java.time.ZoneId.of("America/Sao_Paulo"))
-            .format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+    final var issuedAt =
+        certificate.getCreatedAt().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
     try (PDDocument document = new PDDocument()) {
       PDPage page =
@@ -64,6 +63,7 @@ public class CertificateResourceBuilder {
             background, 0, 0, page.getMediaBox().getWidth(), page.getMediaBox().getHeight());
 
         float centerY = page.getMediaBox().getHeight() / 2;
+        float centerX = page.getMediaBox().getWidth() / 2;
 
         writeText(
             contentStream,
@@ -94,12 +94,20 @@ public class CertificateResourceBuilder {
             centerY - 55);
         writeText(
             contentStream,
-            "de " + certificate.getDuration() + " em " + dateTime + ".",
+            "de " + certificate.getDuration() + " em " + issuedAt + ".",
             TEXT_FONT,
             BLACK_COLOR,
             18,
             50,
             centerY - 80);
+        writeText(
+            contentStream,
+            "Credencial: " + certificate.getCertificateId(),
+            TEXT_FONT,
+            BLACK_COLOR,
+            16,
+            centerX + 30,
+            centerY - 200);
       }
 
       final var byteArrayOutputStream = new ByteArrayOutputStream();

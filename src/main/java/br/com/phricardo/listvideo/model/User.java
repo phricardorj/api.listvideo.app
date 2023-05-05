@@ -32,8 +32,8 @@ public class User implements UserDetails {
   @GeneratedValue(strategy = IDENTITY)
   private Long id;
 
-  @Column(name = "resource_id", nullable = false)
-  private String resourceId;
+  @Column(name = "user_id", nullable = false)
+  private String userId;
 
   @Column(name = "name", nullable = false)
   private String name;
@@ -66,7 +66,7 @@ public class User implements UserDetails {
 
   @PrePersist
   private void generateResourceId() {
-    this.resourceId = UUID.randomUUID().toString();
+    this.userId = UUID.randomUUID().toString();
   }
 
   @Override

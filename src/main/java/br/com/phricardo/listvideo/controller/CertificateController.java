@@ -2,6 +2,7 @@ package br.com.phricardo.listvideo.controller;
 
 import br.com.phricardo.listvideo.dto.request.CertificateDataRequestDTO;
 import br.com.phricardo.listvideo.service.CertificateService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ public class CertificateController {
   }
 
   @PostMapping
+  @SecurityRequirement(name = "bearer-key")
   public ResponseEntity<Resource> generateCertificate(
       @RequestBody @Valid CertificateDataRequestDTO certificateDataRequestDTO) {
     return certificateService.generateCertificate(certificateDataRequestDTO);
