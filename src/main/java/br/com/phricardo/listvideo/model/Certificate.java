@@ -38,8 +38,8 @@ public class Certificate {
   @Column(name = "playlist_id", nullable = false)
   private String playlistId;
 
-  @Column(name = "duration", nullable = false)
-  private String duration;
+  @Column(name = "duration_in_seconds", nullable = false)
+  private Integer durationInSeconds;
 
   @CreatedDate
   @Column(name = "created_at", nullable = false)

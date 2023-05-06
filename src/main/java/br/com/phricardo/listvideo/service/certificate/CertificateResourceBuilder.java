@@ -1,5 +1,6 @@
 package br.com.phricardo.listvideo.service.certificate;
 
+import static br.com.phricardo.listvideo.service.TimeFormatterService.formatTime;
 import static java.util.Objects.requireNonNull;
 
 import br.com.phricardo.listvideo.model.Certificate;
@@ -34,6 +35,7 @@ import org.springframework.stereotype.Service;
 public class CertificateResourceBuilder {
 
   private final UserAuthenticationService userAuthenticationService;
+
   private static final PDType1Font TITLE_FONT = PDType1Font.HELVETICA_BOLD;
   private static final PDType1Font STUDENT_NAME_FONT = PDType1Font.HELVETICA_BOLD;
   private static final PDType1Font TEXT_FONT = PDType1Font.HELVETICA;
@@ -73,9 +75,9 @@ public class CertificateResourceBuilder {
             32,
             50,
             centerY + 150);
-        writeText(contentStream, "Certificamos que", TEXT_FONT, BLACK_COLOR, 30, 50, centerY + 60);
+        writeText(contentStream, "Certificamos que", TEXT_FONT, BLACK_COLOR, 22, 50, centerY + 60);
         writeText(
-            contentStream, user.getName(), STUDENT_NAME_FONT, RED_COLOR, 26, 50, centerY + 20);
+            contentStream, user.getName(), STUDENT_NAME_FONT, RED_COLOR, 28, 50, centerY + 20);
         writeText(
             contentStream,
             "concluiu o conteúdo da playlist do YouTube",
@@ -94,7 +96,7 @@ public class CertificateResourceBuilder {
             centerY - 55);
         writeText(
             contentStream,
-            "de " + certificate.getDuration() + " em " + issuedAt + ".",
+            "de " + formatTime(certificate.getDurationInSeconds()) + " em " + issuedAt + ".",
             TEXT_FONT,
             BLACK_COLOR,
             18,
