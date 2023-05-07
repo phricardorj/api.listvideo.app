@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/api/v1/user")
+@RequestMapping(value = "/v2/user")
 @Tag(name = "User", description = "Endpoints for user")
 public class UserController {
 
