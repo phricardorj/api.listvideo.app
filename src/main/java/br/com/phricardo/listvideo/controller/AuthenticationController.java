@@ -2,9 +2,11 @@ package br.com.phricardo.listvideo.controller;
 
 import br.com.phricardo.listvideo.dto.request.UserAuthLoginRequestDTO;
 import br.com.phricardo.listvideo.dto.request.UserAuthRegisterRequestDTO;
+import br.com.phricardo.listvideo.dto.request.UserForgotPasswordRequestDTO;
 import br.com.phricardo.listvideo.dto.response.TokenResponseDTO;
 import br.com.phricardo.listvideo.dto.response.UserResponseDTO;
 import br.com.phricardo.listvideo.service.UserAuthenticationService;
+import br.com.phricardo.listvideo.service.UserForgotPasswordService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthenticationController {
 
   private final UserAuthenticationService service;
+  private final UserForgotPasswordService userForgotPasswordService;
   private final AuthenticationManager authenticationManager;
 
   @PostMapping("/register")
@@ -34,5 +37,11 @@ public class AuthenticationController {
   @PatchMapping("/activate-account/{userId}")
   public UserResponseDTO activeAccount(@PathVariable String userId) {
     return service.activateAccount(userId);
+  }
+
+  @PostMapping("/forgot-password")
+  public void sendPasswordResetLink(
+      @RequestBody UserForgotPasswordRequestDTO userForgotPasswordRequestDTO) {
+    userForgotPasswordService.sendPasswordResetLink(userForgotPasswordRequestDTO);
   }
 }
