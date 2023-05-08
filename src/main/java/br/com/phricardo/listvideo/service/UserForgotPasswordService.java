@@ -13,6 +13,7 @@ import java.util.Base64;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,18 +26,44 @@ public class UserForgotPasswordService {
   private final EmailTemplateBuilder emailTemplateBuilder;
   private final UserPasswordResetTokenRepository userPasswordResetTokenRepository;
   private final UserAuthRepository userAuthRepository;
+  private final PasswordEncoder passwordEncoder;
 
   @Value("${app.password_recovery_url}")
   private String PASSWORD_RECOVERY_URL;
 
-  public void sendPasswordResetLink(UserForgotPasswordRequestDTO userForgotPasswordRequestDTO) {
-    final var email = userForgotPasswordRequestDTO.getEmail();
+  public void sendPasswordResetLink(String email) {
     final var user = findUserByEmail(email);
-
-    String token = generateToken(user);
-    String emailBody = buildEmailBody(user.getName(), token);
-
+    final var token = generateToken(user);
+    final var emailBody = buildEmailBody(user.getName(), token);
     sendPasswordResetEmail(user.getEmail(), emailBody);
+  }
+
+  public String resetUserPassword(UserForgotPasswordRequestDTO userForgotPasswordRequestDTO) {
+    final var token = userForgotPasswordRequestDTO.getToken();
+    final var isTokenValid = isTokenValid(token);
+
+    if (isTokenValid) {
+      final var newPassword = userForgotPasswordRequestDTO.getNewPassword();
+      final var userPasswordResetToken = findUserPasswordResetTokenByToken(token);
+      final var user = userPasswordResetToken.getUser();
+      user.setPassword(passwordEncoder.encode(newPassword));
+      userAuthRepository.save(user);
+      return "Password changed successfully!";
+    }
+    return "Invalid or expired password reset token";
+  }
+
+  public boolean isTokenValid(String token) {
+    final var userPasswordResetToken = findUserPasswordResetTokenByToken(token);
+    final var now = LocalDateTime.now();
+    final var expiryDate = userPasswordResetToken.getExpiryDate();
+    return now.isBefore(expiryDate);
+  }
+
+  private UserPasswordResetToken findUserPasswordResetTokenByToken(String token) {
+    return userPasswordResetTokenRepository
+        .findByToken(token)
+        .orElseThrow(() -> new NoSuchElementException("There is no password reset token"));
   }
 
   private User findUserByEmail(String email) {

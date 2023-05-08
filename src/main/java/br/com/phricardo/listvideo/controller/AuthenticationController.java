@@ -40,8 +40,13 @@ public class AuthenticationController {
   }
 
   @PostMapping("/forgot-password")
-  public void sendPasswordResetLink(
-      @RequestBody UserForgotPasswordRequestDTO userForgotPasswordRequestDTO) {
-    userForgotPasswordService.sendPasswordResetLink(userForgotPasswordRequestDTO);
+  public void sendPasswordResetLink(@RequestParam("email") String email) {
+    userForgotPasswordService.sendPasswordResetLink(email);
+  }
+
+  @PostMapping("/reset-password")
+  public String resetUserPassword(
+      @RequestBody @Valid UserForgotPasswordRequestDTO userForgotPasswordRequestDTO) {
+    return userForgotPasswordService.resetUserPassword(userForgotPasswordRequestDTO);
   }
 }
