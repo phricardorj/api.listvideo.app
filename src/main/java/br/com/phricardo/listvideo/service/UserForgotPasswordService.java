@@ -1,6 +1,7 @@
 package br.com.phricardo.listvideo.service;
 
-import br.com.phricardo.listvideo.dto.request.UserForgotPasswordRequestDTO;
+import br.com.phricardo.listvideo.dto.update.UserForgotPasswordRequestDTO;
+import br.com.phricardo.listvideo.dto.update.mapper.UserForgotPasswordUpdateMapper;
 import br.com.phricardo.listvideo.model.User;
 import br.com.phricardo.listvideo.model.UserPasswordResetToken;
 import br.com.phricardo.listvideo.repository.UserAuthRepository;
@@ -13,7 +14,6 @@ import java.util.Base64;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -25,8 +25,8 @@ public class UserForgotPasswordService {
   private final EmailSender emailSender;
   private final EmailTemplateBuilder emailTemplateBuilder;
   private final UserPasswordResetTokenRepository userPasswordResetTokenRepository;
+  private final UserForgotPasswordUpdateMapper userForgotPasswordUpdateMapper;
   private final UserAuthRepository userAuthRepository;
-  private final PasswordEncoder passwordEncoder;
 
   @Value("${app.password_recovery_url}")
   private String PASSWORD_RECOVERY_URL;
@@ -41,12 +41,10 @@ public class UserForgotPasswordService {
   public String resetUserPassword(UserForgotPasswordRequestDTO userForgotPasswordRequestDTO) {
     final var token = userForgotPasswordRequestDTO.getToken();
     final var isTokenValid = isTokenValid(token);
-
     if (isTokenValid) {
-      final var newPassword = userForgotPasswordRequestDTO.getNewPassword();
       final var userPasswordResetToken = findUserPasswordResetTokenByToken(token);
       final var user = userPasswordResetToken.getUser();
-      user.setPassword(passwordEncoder.encode(newPassword));
+      userForgotPasswordUpdateMapper.updatePasswordFromDTO(userForgotPasswordRequestDTO, user);
       userAuthRepository.save(user);
       return "Password changed successfully!";
     }

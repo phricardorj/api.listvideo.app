@@ -2,9 +2,9 @@ package br.com.phricardo.listvideo.controller;
 
 import br.com.phricardo.listvideo.dto.request.UserAuthLoginRequestDTO;
 import br.com.phricardo.listvideo.dto.request.UserAuthRegisterRequestDTO;
-import br.com.phricardo.listvideo.dto.request.UserForgotPasswordRequestDTO;
 import br.com.phricardo.listvideo.dto.response.TokenResponseDTO;
 import br.com.phricardo.listvideo.dto.response.UserResponseDTO;
+import br.com.phricardo.listvideo.dto.update.UserForgotPasswordRequestDTO;
 import br.com.phricardo.listvideo.service.UserAuthenticationService;
 import br.com.phricardo.listvideo.service.UserForgotPasswordService;
 import io.swagger.v3.oas.annotations.Operation;
