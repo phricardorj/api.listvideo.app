@@ -3,6 +3,7 @@ package br.com.phricardo.listvideo.controller;
 import br.com.phricardo.listvideo.dto.request.UserAuthLoginRequestDTO;
 import br.com.phricardo.listvideo.dto.request.UserAuthRegisterRequestDTO;
 import br.com.phricardo.listvideo.dto.response.TokenResponseDTO;
+import br.com.phricardo.listvideo.dto.response.UserForgotPasswordResponseDTO;
 import br.com.phricardo.listvideo.dto.response.UserResponseDTO;
 import br.com.phricardo.listvideo.dto.update.UserForgotPasswordRequestDTO;
 import br.com.phricardo.listvideo.service.UserAuthenticationService;
@@ -61,7 +62,7 @@ public class AuthenticationController {
       summary = "Reset User Password if Token is Valid",
       description =
           "Resets the user's password in the application based on the validity of the token.")
-  public String resetUserPassword(
+  public UserForgotPasswordResponseDTO resetUserPassword(
       @RequestBody @Valid UserForgotPasswordRequestDTO userForgotPasswordRequestDTO) {
     return userForgotPasswordService.resetUserPassword(userForgotPasswordRequestDTO);
   }

@@ -1,5 +1,7 @@
 package br.com.phricardo.listvideo.service;
 
+import br.com.phricardo.listvideo.dto.response.UserForgotPasswordResponseDTO;
+import br.com.phricardo.listvideo.dto.response.mapper.UserForgotPasswordResponseMapper;
 import br.com.phricardo.listvideo.dto.update.UserForgotPasswordRequestDTO;
 import br.com.phricardo.listvideo.dto.update.mapper.UserForgotPasswordUpdateMapper;
 import br.com.phricardo.listvideo.model.User;
@@ -26,6 +28,7 @@ public class UserForgotPasswordService {
   private final EmailTemplateBuilder emailTemplateBuilder;
   private final UserPasswordResetTokenRepository userPasswordResetTokenRepository;
   private final UserForgotPasswordUpdateMapper userForgotPasswordUpdateMapper;
+  private final UserForgotPasswordResponseMapper userForgotPasswordResponseMapper;
   private final UserAuthRepository userAuthRepository;
 
   @Value("${app.password_recovery_url}")
@@ -38,7 +41,8 @@ public class UserForgotPasswordService {
     sendPasswordResetEmail(user.getEmail(), emailBody);
   }
 
-  public String resetUserPassword(UserForgotPasswordRequestDTO userForgotPasswordRequestDTO) {
+  public UserForgotPasswordResponseDTO resetUserPassword(
+      UserForgotPasswordRequestDTO userForgotPasswordRequestDTO) {
     final var token = userForgotPasswordRequestDTO.getToken();
     final var isTokenValid = isTokenValid(token);
     if (isTokenValid) {
@@ -46,9 +50,9 @@ public class UserForgotPasswordService {
       final var user = userPasswordResetToken.getUser();
       userForgotPasswordUpdateMapper.updatePasswordFromDTO(userForgotPasswordRequestDTO, user);
       userAuthRepository.save(user);
-      return "Password changed successfully!";
+      return userForgotPasswordResponseMapper.from("password updated successfully");
     }
-    return "Invalid or expired password reset token";
+    throw new IllegalArgumentException("Invalid or expired password reset token");
   }
 
   public boolean isTokenValid(String token) {
