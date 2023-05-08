@@ -10,10 +10,10 @@ import br.com.phricardo.listvideo.repository.UserAuthRepository;
 import br.com.phricardo.listvideo.repository.UserPasswordResetTokenRepository;
 import br.com.phricardo.listvideo.service.email.EmailSender;
 import br.com.phricardo.listvideo.service.email.EmailTemplateBuilder;
-import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -75,18 +75,10 @@ public class UserForgotPasswordService {
   }
 
   private String generateToken(User user) {
-    byte[] tokenBytes = generateRandomTokenBytes();
-    String token = encodeToken(tokenBytes);
-    LocalDateTime expiryDate = calculateExpiryDate();
+    final var token = UUID.randomUUID().toString().replace("-", "");
+    final var expiryDate = calculateExpiryDate();
     savePasswordResetToken(token, expiryDate, user);
     return token;
-  }
-
-  private byte[] generateRandomTokenBytes() {
-    SecureRandom secureRandom = new SecureRandom();
-    byte[] tokenBytes = new byte[32];
-    secureRandom.nextBytes(tokenBytes);
-    return tokenBytes;
   }
 
   private String encodeToken(byte[] tokenBytes) {
@@ -104,7 +96,7 @@ public class UserForgotPasswordService {
   }
 
   private String buildEmailBody(String userName, String token) {
-    String resetLink = PASSWORD_RECOVERY_URL + token;
+    final var resetLink = PASSWORD_RECOVERY_URL + token;
 
     return emailTemplateBuilder
         .setTemplate("email-template.html")
