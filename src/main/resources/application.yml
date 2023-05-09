@@ -41,7 +41,7 @@ logging:
 app:
   client_base_url: ${CLIENT_BASE_URL:http://localhost:3000/}
   account_activation_url: ${ACCOUNT_ACTIVATION_URL:http://localhost:3000/activate-account/}
-  password_recovery_url: ${PASSWORD_RECOVERY_URL:http://localhost:3000/password-recovery/}
+  password_recovery_url: ${PASSWORD_RECOVERY_URL:http://localhost:3000/forgot-password/}
   jwt:
     token:
       secret: ${JWT_SECRET:12345678}
