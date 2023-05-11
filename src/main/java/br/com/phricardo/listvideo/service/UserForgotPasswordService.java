@@ -89,7 +89,12 @@ public class UserForgotPasswordService {
 
   private void savePasswordResetToken(String token, LocalDateTime expiryDate, User user) {
     UserPasswordResetToken passwordResetToken =
-        UserPasswordResetToken.builder().token(token).expiryDate(expiryDate).user(user).build();
+        UserPasswordResetToken.builder()
+            .token(token)
+            .expiryDate(expiryDate)
+            .user(user)
+            .passwordChanged(false)
+            .build();
     userPasswordResetTokenRepository.save(passwordResetToken);
   }
 

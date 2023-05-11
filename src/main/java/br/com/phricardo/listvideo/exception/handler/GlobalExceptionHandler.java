@@ -106,6 +106,13 @@ public class GlobalExceptionHandler {
             new ErrorResponse(BAD_REQUEST.value(), ex.getLocalizedMessage(), "REGISTRATION_ERROR"));
   }
 
+  @ExceptionHandler(IllegalArgumentException.class)
+  public ResponseEntity<?> handleIllegalArgument(IllegalArgumentException ex) {
+    return ResponseEntity.status(UNAUTHORIZED)
+        .body(
+            new ErrorResponse(UNAUTHORIZED.value(), ex.getLocalizedMessage(), "ILLEGAL_ARGUMENT"));
+  }
+
   @ExceptionHandler(IllegalFormatConversionException.class)
   public ResponseEntity<?> handleIllegalFormatConversion(IllegalFormatConversionException ex) {
     return ResponseEntity.status(BAD_REQUEST)
