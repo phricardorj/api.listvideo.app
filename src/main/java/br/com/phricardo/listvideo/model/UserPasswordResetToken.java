@@ -5,6 +5,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import lombok.*;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Data
@@ -30,6 +31,10 @@ public class UserPasswordResetToken {
 
   @Column(name = "expiry_date")
   private LocalDateTime expiryDate;
+
+  @LastModifiedDate
+  @Column(name = "last_password_reset_date")
+  private LocalDateTime lastPasswordResetDate;
 
   @Column(name = "password_changed", nullable = false, columnDefinition = "boolean default false")
   private Boolean passwordChanged;
