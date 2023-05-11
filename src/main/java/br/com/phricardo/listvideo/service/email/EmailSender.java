@@ -3,6 +3,7 @@ package br.com.phricardo.listvideo.service.email;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -40,6 +41,13 @@ public class EmailSender {
     helper.setTo(recipient);
     helper.setSubject(subject);
     helper.setText(body, isHtml);
+
+    helper.getMimeMessage().setHeader("X-Unsent", "1");
+    helper.getMimeMessage().setHeader("X-Auto-Response-Suppress", "All");
+
+    ClassPathResource imageResource = new ClassPathResource("templates/listvideo.png");
+    helper.addInline("logo", imageResource, "image/png");
+
     return message;
   }
 
