@@ -11,7 +11,6 @@ import br.com.phricardo.listvideo.repository.UserPasswordResetTokenRepository;
 import br.com.phricardo.listvideo.service.email.EmailSender;
 import br.com.phricardo.listvideo.service.email.EmailTemplateBuilder;
 import java.time.LocalDateTime;
-import java.util.Base64;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -50,6 +49,8 @@ public class UserForgotPasswordService {
       final var user = userPasswordResetToken.getUser();
       userForgotPasswordUpdateMapper.updatePasswordFromDTO(userForgotPasswordRequestDTO, user);
       userAuthRepository.save(user);
+      userPasswordResetToken.setPasswordChanged(true);
+      userPasswordResetTokenRepository.save(userPasswordResetToken);
       return userForgotPasswordResponseMapper.from("password updated successfully");
     }
     throw new IllegalArgumentException("Invalid or expired password reset token");
@@ -59,7 +60,8 @@ public class UserForgotPasswordService {
     final var userPasswordResetToken = findUserPasswordResetTokenByToken(token);
     final var now = LocalDateTime.now();
     final var expiryDate = userPasswordResetToken.getExpiryDate();
-    return now.isBefore(expiryDate);
+    final var passwordChanged = userPasswordResetToken.getPasswordChanged();
+    return !passwordChanged && now.isBefore(expiryDate);
   }
 
   private UserPasswordResetToken findUserPasswordResetTokenByToken(String token) {
@@ -79,10 +81,6 @@ public class UserForgotPasswordService {
     final var expiryDate = calculateExpiryDate();
     savePasswordResetToken(token, expiryDate, user);
     return token;
-  }
-
-  private String encodeToken(byte[] tokenBytes) {
-    return Base64.getUrlEncoder().withoutPadding().encodeToString(tokenBytes);
   }
 
   private LocalDateTime calculateExpiryDate() {

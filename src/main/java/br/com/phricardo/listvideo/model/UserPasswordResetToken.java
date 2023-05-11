@@ -28,5 +28,9 @@ public class UserPasswordResetToken {
   @JoinColumn(name = "username", referencedColumnName = "username", nullable = false)
   private User user;
 
+  @Column(name = "expiry_date")
   private LocalDateTime expiryDate;
+
+  @Column(name = "password_changed", nullable = false, columnDefinition = "boolean default false")
+  private Boolean passwordChanged;
 }

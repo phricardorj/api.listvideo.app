@@ -14,6 +14,7 @@ public abstract class UserForgotPasswordUpdateMapper {
 
   @Autowired private PasswordEncoder passwordEncoder;
 
+  @Mapping(source = "token", ignore = true)
   @Mapping(target = "password", source = "newPassword", qualifiedByName = "encodePassword")
   public abstract void updatePasswordFromDTO(
       UserForgotPasswordRequestDTO requestDTO, @MappingTarget User user);
