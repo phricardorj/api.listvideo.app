@@ -40,6 +40,27 @@ public class UserForgotPasswordService {
     sendPasswordResetEmail(user.getEmail(), emailBody);
   }
 
+  private String generateToken(User user) {
+    final var token = UUID.randomUUID().toString().replace("-", "");
+    final var expiryDate = calculateExpiryDate();
+    saveOrUpdatePasswordResetToken(token, expiryDate, user);
+    return token;
+  }
+
+  private void saveOrUpdatePasswordResetToken(String token, LocalDateTime expiryDate, User user) {
+    UserPasswordResetToken passwordResetToken =
+        userPasswordResetTokenRepository
+            .findByUser(user)
+            .orElse(UserPasswordResetToken.builder().build());
+
+    passwordResetToken.setToken(token);
+    passwordResetToken.setExpiryDate(expiryDate);
+    passwordResetToken.setPasswordChanged(false);
+    passwordResetToken.setUser(user);
+
+    userPasswordResetTokenRepository.save(passwordResetToken);
+  }
+
   public UserForgotPasswordResponseDTO resetUserPassword(
       UserForgotPasswordRequestDTO userForgotPasswordRequestDTO) {
     final var token = userForgotPasswordRequestDTO.getToken();
@@ -76,26 +97,8 @@ public class UserForgotPasswordService {
         .orElseThrow(() -> new NoSuchElementException("No user found with email: " + email));
   }
 
-  private String generateToken(User user) {
-    final var token = UUID.randomUUID().toString().replace("-", "");
-    final var expiryDate = calculateExpiryDate();
-    savePasswordResetToken(token, expiryDate, user);
-    return token;
-  }
-
   private LocalDateTime calculateExpiryDate() {
     return LocalDateTime.now().plusMinutes(EXPIRATION);
-  }
-
-  private void savePasswordResetToken(String token, LocalDateTime expiryDate, User user) {
-    UserPasswordResetToken passwordResetToken =
-        UserPasswordResetToken.builder()
-            .token(token)
-            .expiryDate(expiryDate)
-            .user(user)
-            .passwordChanged(false)
-            .build();
-    userPasswordResetTokenRepository.save(passwordResetToken);
   }
 
   private String buildEmailBody(String userName, String token) {
