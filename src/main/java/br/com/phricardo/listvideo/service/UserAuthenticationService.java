@@ -13,6 +13,7 @@ import br.com.phricardo.listvideo.dto.response.mapper.TokenResponseMapper;
 import br.com.phricardo.listvideo.dto.response.mapper.UserResponseMapper;
 import br.com.phricardo.listvideo.exception.EmailNotVerifiedException;
 import br.com.phricardo.listvideo.exception.LoginException;
+import br.com.phricardo.listvideo.exception.UserActivationException;
 import br.com.phricardo.listvideo.model.User;
 import br.com.phricardo.listvideo.repository.UserAuthRepository;
 import br.com.phricardo.listvideo.service.email.EmailSender;
@@ -115,6 +116,13 @@ public class UserAuthenticationService implements UserDetailsService {
                 new EntityNotFoundException(format("User with username %s not found.", username)));
   }
 
+  public User getUserByEmail(String email) {
+    return repository
+        .findByEmail(email)
+        .orElseThrow(
+            () -> new EntityNotFoundException(format("User with email %s not found.", email)));
+  }
+
   public UserResponseDTO getUserResponseByUsername(String username) {
     return of(getUserByUsername(username))
         .map(userResponseMapper::from)
@@ -139,6 +147,15 @@ public class UserAuthenticationService implements UserDetailsService {
                     format(
                         "Could not activate account: User with ID %s not found or account already activated.",
                         userId)));
+  }
+
+  public void accountActivationEmailResend(String email) {
+    final var user = getUserByEmail(email);
+    final var userStatus = user.getStatus();
+    if (userStatus)
+      throw new UserActivationException(
+          "User is already activated, there is no need to resend email");
+    sendAccountVerificationEmail(user);
   }
 
   private void sendAccountVerificationEmail(@NonNull User user) {

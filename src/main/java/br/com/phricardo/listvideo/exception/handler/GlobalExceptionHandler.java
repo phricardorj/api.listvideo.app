@@ -5,6 +5,7 @@ import static org.springframework.http.HttpStatus.*;
 import br.com.phricardo.listvideo.exception.EmailNotVerifiedException;
 import br.com.phricardo.listvideo.exception.LoginException;
 import br.com.phricardo.listvideo.exception.RegistrationException;
+import br.com.phricardo.listvideo.exception.UserActivationException;
 import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.IllegalFormatConversionException;
@@ -104,6 +105,14 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(BAD_REQUEST)
         .body(
             new ErrorResponse(BAD_REQUEST.value(), ex.getLocalizedMessage(), "REGISTRATION_ERROR"));
+  }
+
+  @ExceptionHandler(UserActivationException.class)
+  public ResponseEntity<?> handleUserActivationException(UserActivationException ex) {
+    return ResponseEntity.status(CONFLICT)
+        .body(
+            new ErrorResponse(
+                CONFLICT.value(), ex.getLocalizedMessage(), "USER_ALREADY_ACTIVATED"));
   }
 
   @ExceptionHandler(IllegalArgumentException.class)

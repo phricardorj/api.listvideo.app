@@ -40,14 +40,6 @@ public class AuthenticationController {
     return service.loginUser(loginRequestDTO, authenticationManager);
   }
 
-  @PatchMapping("/activate-account/{userId}")
-  @Operation(
-      summary = "Activate User Account",
-      description = "Activates a user's account based on the provided user ID.")
-  public UserResponseDTO activeAccount(@PathVariable String userId) {
-    return service.activateAccount(userId);
-  }
-
   @PostMapping("/forgot-password")
   @Operation(
       summary = "Send Password Reset Token",
@@ -65,5 +57,21 @@ public class AuthenticationController {
   public UserForgotPasswordResponseDTO resetUserPassword(
       @RequestBody @Valid UserForgotPasswordRequestDTO userForgotPasswordRequestDTO) {
     return userForgotPasswordService.resetUserPassword(userForgotPasswordRequestDTO);
+  }
+
+  @PatchMapping("/activate-account/{userId}")
+  @Operation(
+      summary = "Activate User Account",
+      description = "Activates a user's account based on the provided user ID.")
+  public UserResponseDTO activeAccount(@PathVariable String userId) {
+    return service.activateAccount(userId);
+  }
+
+  @PostMapping("/account/activation-resend")
+  @Operation(
+      summary = "User account activation resend",
+      description = "Resend user account activation link to email")
+  public void accountActivationEmailResend(@RequestParam("email") String email) {
+    service.accountActivationEmailResend(email);
   }
 }
