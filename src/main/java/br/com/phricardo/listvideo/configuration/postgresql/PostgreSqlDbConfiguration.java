@@ -1,4 +1,4 @@
-package br.com.phricardo.listvideo.configurations.postgresql;
+package br.com.phricardo.listvideo.configuration.postgresql;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;

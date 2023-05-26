@@ -1,4 +1,4 @@
-package br.com.phricardo.listvideo.configurations.security;
+package br.com.phricardo.listvideo.configuration.security;
 
 import static java.util.Arrays.asList;
 

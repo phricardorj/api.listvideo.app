@@ -1,4 +1,4 @@
-package br.com.phricardo.listvideo.configurations.swagger;
+package br.com.phricardo.listvideo.configuration.swagger;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;

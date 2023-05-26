@@ -6,7 +6,7 @@ import static java.util.Objects.requireNonNull;
 import br.com.phricardo.listvideo.model.Certificate;
 import br.com.phricardo.listvideo.model.User;
 import br.com.phricardo.listvideo.service.UserAuthenticationService;
-import java.awt.Color;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

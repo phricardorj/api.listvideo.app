@@ -1,6 +1,11 @@
 package br.com.phricardo.listvideo.exception.handler;
 
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.CONFLICT;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 import br.com.phricardo.listvideo.exception.EmailNotVerifiedException;
 import br.com.phricardo.listvideo.exception.LoginException;

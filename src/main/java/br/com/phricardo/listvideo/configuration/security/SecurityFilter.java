@@ -1,4 +1,4 @@
-package br.com.phricardo.listvideo.configurations.security;
+package br.com.phricardo.listvideo.configuration.security;
 
 import br.com.phricardo.listvideo.repository.UserAuthRepository;
 import br.com.phricardo.listvideo.service.TokenService;
