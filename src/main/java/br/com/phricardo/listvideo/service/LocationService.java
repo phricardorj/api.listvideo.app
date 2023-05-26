@@ -8,8 +8,6 @@ public class LocationService {
 
   public String buildLocation(final String url) {
     if (url == null) throw new NullPointerException("URL cannot be null");
-    return ServletUriComponentsBuilder.fromCurrentContextPath()
-        .path("/v2/" + url)
-        .toUriString();
+    return ServletUriComponentsBuilder.fromCurrentContextPath().path("/v2/" + url).toUriString();
   }
 }
