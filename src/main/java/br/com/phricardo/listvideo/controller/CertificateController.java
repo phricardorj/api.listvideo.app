@@ -3,7 +3,6 @@ package br.com.phricardo.listvideo.controller;
 import br.com.phricardo.listvideo.controller.doc.CertificateControllerDoc;
 import br.com.phricardo.listvideo.dto.request.CertificateDataRequestDTO;
 import br.com.phricardo.listvideo.service.CertificateService;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
@@ -29,7 +28,6 @@ public class CertificateController implements CertificateControllerDoc {
   }
 
   @PostMapping
-  @SecurityRequirement(name = "bearer-key")
   public ResponseEntity<Resource> generateCertificate(
       @RequestBody @Valid CertificateDataRequestDTO certificateDataRequestDTO) {
     return certificateService.generateCertificate(certificateDataRequestDTO);

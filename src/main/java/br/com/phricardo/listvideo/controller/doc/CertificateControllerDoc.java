@@ -2,6 +2,7 @@ package br.com.phricardo.listvideo.controller.doc;
 
 import br.com.phricardo.listvideo.dto.request.CertificateDataRequestDTO;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.core.io.Resource;
@@ -21,6 +22,7 @@ public interface CertificateControllerDoc {
   @Operation(
       summary = "Generate Certificate",
       description = "Generates a certificate based on the provided data.")
+  @SecurityRequirement(name = "bearer-key")
   ResponseEntity<Resource> generateCertificate(
       @RequestBody @Valid CertificateDataRequestDTO certificateDataRequestDTO);
 }

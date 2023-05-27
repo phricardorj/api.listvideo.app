@@ -21,5 +21,6 @@ public interface UserControllerDoc {
   @Operation(
       summary = "Get Current Authenticated User",
       description = "Retrieves information about the currently authenticated user.")
+  @SecurityRequirement(name = "bearer-key")
   UserResponseDTO getCurrentAuthenticatedUser();
 }
