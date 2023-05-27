@@ -85,7 +85,7 @@ public class UserAuthenticationService implements UserDetailsService {
                         })
                     .map(
                         user -> {
-                          if (!user.getStatus()) throw new EmailNotVerifiedException();
+                          if (!user.getIsAccountActivated()) throw new EmailNotVerifiedException();
                           return user;
                         })
                     .map(tokenService::generate)
@@ -133,10 +133,10 @@ public class UserAuthenticationService implements UserDetailsService {
 
   public UserResponseDTO activateAccount(String userId) {
     return repository
-        .findByUserIdAndStatusFalse(userId)
+        .findByUserIdAndIsAccountActivatedFalse(userId)
         .map(
             user -> {
-              user.setStatus(true);
+              user.setIsAccountActivated(true);
               return user;
             })
         .map(repository::save)
@@ -151,7 +151,7 @@ public class UserAuthenticationService implements UserDetailsService {
 
   public void accountActivationEmailResend(String email) {
     final var user = getUserByEmail(email);
-    final var userStatus = user.getStatus();
+    final var userStatus = user.getIsAccountActivated();
     if (userStatus)
       throw new UserActivationException(
           "User is already activated, there is no need to resend email");

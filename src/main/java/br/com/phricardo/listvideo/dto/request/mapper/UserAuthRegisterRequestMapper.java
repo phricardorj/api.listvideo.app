@@ -15,7 +15,7 @@ public abstract class UserAuthRegisterRequestMapper {
 
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "userId", ignore = true)
-  @Mapping(target = "status", constant = "false")
+  @Mapping(target = "isAccountActivated", constant = "false")
   @Mapping(target = "isVerifiedAccount", constant = "false")
   @Mapping(source = "email", target = "email", qualifiedByName = "toLowerCase")
   @Mapping(source = "password", target = "password", qualifiedByName = "encodePassword")

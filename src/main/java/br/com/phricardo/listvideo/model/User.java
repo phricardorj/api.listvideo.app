@@ -55,8 +55,11 @@ public class User implements UserDetails {
   @Column(name = "password", nullable = false)
   private String password;
 
-  @Column(name = "status", nullable = false, columnDefinition = "boolean default false")
-  private Boolean status;
+  @Column(
+      name = "is_account_activated",
+      nullable = false,
+      columnDefinition = "boolean default false")
+  private Boolean isAccountActivated;
 
   @Column(
       name = "is_verified_account",
