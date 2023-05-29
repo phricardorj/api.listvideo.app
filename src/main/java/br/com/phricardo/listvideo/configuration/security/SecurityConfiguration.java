@@ -36,6 +36,8 @@ public class SecurityConfiguration {
         .authorizeHttpRequests()
         .requestMatchers("/v2/auth/**")
         .permitAll()
+        .requestMatchers("/v2/account/**")
+        .permitAll()
         .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**", "/")
         .permitAll()
         .requestMatchers(HttpMethod.GET, "/v2/user/{username}")
