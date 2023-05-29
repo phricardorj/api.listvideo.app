@@ -9,6 +9,7 @@ import br.com.phricardo.listvideo.service.UserAuthenticationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,5 +32,10 @@ public class AuthenticationController implements AuthenticationControllerDoc {
   @PostMapping("/login")
   public TokenResponseDTO login(@RequestBody @Valid UserAuthLoginRequestDTO loginRequestDTO) {
     return service.loginUser(loginRequestDTO, authenticationManager);
+  }
+
+  @GetMapping("/authenticated/user")
+  public UserResponseDTO getCurrentAuthenticatedUser() {
+    return service.getCurrentUserDTO();
   }
 }

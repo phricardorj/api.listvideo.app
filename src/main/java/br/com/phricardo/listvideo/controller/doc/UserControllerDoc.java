@@ -2,7 +2,6 @@ package br.com.phricardo.listvideo.controller.doc;
 
 import br.com.phricardo.listvideo.dto.response.UserResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,12 +14,4 @@ public interface UserControllerDoc {
       summary = "Get User by Username",
       description = "Retrieves user information based on the provided username.")
   UserResponseDTO getUserByUsername(@PathVariable String username);
-
-  @GetMapping("/authenticated")
-  @SecurityRequirement(name = "bearer-key")
-  @Operation(
-      summary = "Get Current Authenticated User",
-      description = "Retrieves information about the currently authenticated user.")
-  @SecurityRequirement(name = "bearer-key")
-  UserResponseDTO getCurrentAuthenticatedUser();
 }

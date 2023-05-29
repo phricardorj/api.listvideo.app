@@ -5,6 +5,7 @@ import br.com.phricardo.listvideo.dto.request.UserAuthRegisterRequestDTO;
 import br.com.phricardo.listvideo.dto.response.TokenResponseDTO;
 import br.com.phricardo.listvideo.dto.response.UserResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,4 +20,10 @@ public interface AuthenticationControllerDoc {
       summary = "User Login",
       description = "Authenticates a user and returns a JWT token if the credentials are valid.")
   TokenResponseDTO login(@RequestBody @Valid UserAuthLoginRequestDTO loginRequestDTO);
+
+  @Operation(
+      summary = "Get Current Authenticated User",
+      description = "Retrieves information about the currently authenticated user.")
+  @SecurityRequirement(name = "bearer-key")
+  UserResponseDTO getCurrentAuthenticatedUser();
 }

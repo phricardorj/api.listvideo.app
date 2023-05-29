@@ -24,22 +24,22 @@ public class AccountController implements AccountControllerDoc {
   private final UserAuthenticationService service;
   private final UserForgotPasswordService userForgotPasswordService;
 
-  @PatchMapping("/activate/{userId}")
+  @PatchMapping("/activation/{userId}")
   public UserResponseDTO activeAccount(@PathVariable String userId) {
     return service.activateAccount(userId);
   }
 
-  @PostMapping("/activation-resend")
+  @PostMapping("/activation/resend")
   public void accountActivationEmailResend(@RequestParam("email") String email) {
     service.accountActivationEmailResend(email);
   }
 
-  @PostMapping("/forgot-password")
+  @PostMapping("/password/forgot")
   public void sendPasswordResetLink(@RequestParam("email") String email) {
     userForgotPasswordService.sendPasswordResetLink(email);
   }
 
-  @PostMapping("/reset-password")
+  @PostMapping("/password/reset")
   public UserForgotPasswordResponseDTO resetUserPassword(
       @RequestBody @Valid UserForgotPasswordRequestDTO userForgotPasswordRequestDTO) {
     return userForgotPasswordService.resetUserPassword(userForgotPasswordRequestDTO);
