@@ -3,6 +3,8 @@ package br.com.phricardo.listvideo.model;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PRIVATE;
 
+import br.com.phricardo.listvideo.annotation.ip.setter.IP;
+import br.com.phricardo.listvideo.annotation.ip.setter.IpClientListener;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -32,7 +34,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @EqualsAndHashCode(of = "id")
 @Entity(name = "User")
 @Table(name = "users")
-@EntityListeners(AuditingEntityListener.class)
+@EntityListeners({AuditingEntityListener.class, IpClientListener.class})
 public class User implements UserDetails {
 
   @Id
@@ -76,6 +78,11 @@ public class User implements UserDetails {
   @Setter(PRIVATE)
   @Column(name = "updated_at")
   private LocalDateTime updatedAt;
+
+  @IP
+  @Setter(PRIVATE)
+  @Column(name = "ip_address")
+  private String ipAddress;
 
   @PrePersist
   private void generateResourceId() {
