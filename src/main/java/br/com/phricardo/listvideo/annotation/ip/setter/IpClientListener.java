@@ -37,11 +37,15 @@ public class IpClientListener implements ConfigurableObject {
       for (Field field : fields) {
         if (field.isAnnotationPresent(IP.class)) {
           field.setAccessible(true);
-          field.set(obj, request.getRemoteAddr());
+          String ipAddress = request.getHeader("X-Forwarded-For");
+          if (ipAddress == null || ipAddress.isEmpty()) {
+            ipAddress = request.getRemoteAddr();
+          }
+          field.set(obj, ipAddress);
         }
       }
-    } catch (IllegalAccessException illegalAccessException) {
-      log.error("Error in the annotation that defines the ip");
+    } catch (IllegalAccessException e) {
+      log.error("Error setting the IP address field", e);
     }
   }
 }
