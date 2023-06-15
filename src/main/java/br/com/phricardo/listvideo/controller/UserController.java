@@ -20,4 +20,9 @@ public class UserController implements UserControllerDoc {
   public UserResponseDTO getUserByUsername(@PathVariable String username) {
     return userAuthenticationService.getUserResponseByUsername(username);
   }
+
+  @GetMapping("/avatar/{username}")
+  public String getUserAvatarByUsername(@PathVariable String username) {
+    return username;
+  }
 }

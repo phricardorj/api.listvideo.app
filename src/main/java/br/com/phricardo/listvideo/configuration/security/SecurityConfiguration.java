@@ -42,6 +42,8 @@ public class SecurityConfiguration {
         .permitAll()
         .requestMatchers(HttpMethod.GET, "/v2/user/{username}")
         .permitAll()
+        .requestMatchers(HttpMethod.GET, "/v2/user/avatar/{username}")
+        .permitAll()
         .requestMatchers(HttpMethod.GET, "/v2/certificate/{username}/{certificateId}")
         .permitAll()
         .requestMatchers("/actuator/**")
