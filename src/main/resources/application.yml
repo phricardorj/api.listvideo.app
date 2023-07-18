@@ -1,7 +1,7 @@
 spring:
   datasource:
     # The JDBC driver class used by the data source.
-    river-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     # The URL for the database. Use the environment variable if it exists, otherwise use the default value.
     url: ${DB_MYSQL_URL:jdbc:mysql://localhost:3306/lv_database}
     # The username for the database. Use the environment variable if it exists, otherwise use the default value.
