@@ -18,3 +18,12 @@ services:
       - './docker/db/data:/var/lib/mysql'
       - './docker/db/my.cnf:/etc/mysql/conf.d/my.cnf'
       - './docker/db/sql:/docker-entrypoint-initdb.d'
+#  app:
+#    container_name: listvideo_api
+#    build: .
+#    ports:
+#      - '8080:8080'
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/lv_database?user=admin&password=admin
+#    depends_on:
+#      - mysql
