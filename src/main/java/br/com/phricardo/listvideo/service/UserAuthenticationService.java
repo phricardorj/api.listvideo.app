@@ -120,7 +120,7 @@ public class UserAuthenticationService implements UserDetailsService {
   }
 
   public UserAvailabilityUsernameResponseDTO isUsernameRegistered(String username) {
-    final var availability = repository.findByUsername(username).isPresent();
+    final var availability = repository.findByUsername(username).isEmpty();
     return userAvailabilityUsernameResponseMapper.from(username, availability);
   }
 
