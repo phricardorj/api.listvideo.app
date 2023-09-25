@@ -1,5 +1,6 @@
 package br.com.phricardo.listvideo.controller.doc;
 
+import br.com.phricardo.listvideo.dto.response.UserAvailabilityUsernameResponseDTO;
 import br.com.phricardo.listvideo.dto.response.UserResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -16,5 +17,5 @@ public interface UserControllerDoc {
   @Operation(
       summary = "Check Username Availability",
       description = "Verifies if the provided username is already registered.")
-  boolean isUsernameRegistered(@PathVariable String username);
+  UserAvailabilityUsernameResponseDTO isUsernameRegistered(@PathVariable String username);
 }

@@ -8,8 +8,10 @@ import br.com.phricardo.listvideo.dto.request.UserAuthLoginRequestDTO;
 import br.com.phricardo.listvideo.dto.request.UserAuthRegisterRequestDTO;
 import br.com.phricardo.listvideo.dto.request.mapper.UserAuthRegisterRequestMapper;
 import br.com.phricardo.listvideo.dto.response.TokenResponseDTO;
+import br.com.phricardo.listvideo.dto.response.UserAvailabilityUsernameResponseDTO;
 import br.com.phricardo.listvideo.dto.response.UserResponseDTO;
 import br.com.phricardo.listvideo.dto.response.mapper.TokenResponseMapper;
+import br.com.phricardo.listvideo.dto.response.mapper.UserAvailabilityUsernameResponseMapper;
 import br.com.phricardo.listvideo.dto.response.mapper.UserResponseMapper;
 import br.com.phricardo.listvideo.exception.EmailNotVerifiedException;
 import br.com.phricardo.listvideo.exception.LoginException;
@@ -40,6 +42,7 @@ public class UserAuthenticationService implements UserDetailsService {
   private final UserAuthRegisterRequestMapper registerRequestMapper;
   private final TokenResponseMapper tokenResponseMapper;
   private final UserResponseMapper userResponseMapper;
+  private final UserAvailabilityUsernameResponseMapper userAvailabilityUsernameResponseMapper;
   private final TokenService tokenService;
   private final EmailSender emailSender;
   private final EmailTemplateBuilder emailTemplateBuilder;
@@ -116,8 +119,9 @@ public class UserAuthenticationService implements UserDetailsService {
                 new EntityNotFoundException(format("User with username %s not found.", username)));
   }
 
-  public boolean isUsernameRegistered(String username) {
-    return repository.findByUsername(username).isPresent();
+  public UserAvailabilityUsernameResponseDTO isUsernameRegistered(String username) {
+    final var availability = repository.findByUsername(username).isPresent();
+    return userAvailabilityUsernameResponseMapper.from(username, availability);
   }
 
   public User getUserByEmail(String email) {

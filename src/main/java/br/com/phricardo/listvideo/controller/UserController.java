@@ -1,6 +1,7 @@
 package br.com.phricardo.listvideo.controller;
 
 import br.com.phricardo.listvideo.controller.doc.UserControllerDoc;
+import br.com.phricardo.listvideo.dto.response.UserAvailabilityUsernameResponseDTO;
 import br.com.phricardo.listvideo.dto.response.UserResponseDTO;
 import br.com.phricardo.listvideo.service.UserAuthenticationService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class UserController implements UserControllerDoc {
   private final UserAuthenticationService userAuthenticationService;
 
   @GetMapping("/check-username/{username}")
-  public boolean isUsernameRegistered(@PathVariable String username) {
+  public UserAvailabilityUsernameResponseDTO isUsernameRegistered(@PathVariable String username) {
     return userAuthenticationService.isUsernameRegistered(username);
   }
 
