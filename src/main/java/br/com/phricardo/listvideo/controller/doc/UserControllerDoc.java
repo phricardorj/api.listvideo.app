@@ -14,7 +14,7 @@ public interface UserControllerDoc {
   UserResponseDTO getUserByUsername(@PathVariable String username);
 
   @Operation(
-      summary = "Get User Avatar by Username",
-      description = "Retrieves user avatar based on the provided username.")
-  String getUserAvatarByUsername(@PathVariable String username);
+      summary = "Check Username Availability",
+      description = "Verifies if the provided username is already registered.")
+  boolean isUsernameRegistered(@PathVariable String username);
 }

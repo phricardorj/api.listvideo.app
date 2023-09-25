@@ -116,6 +116,10 @@ public class UserAuthenticationService implements UserDetailsService {
                 new EntityNotFoundException(format("User with username %s not found.", username)));
   }
 
+  public boolean isUsernameRegistered(String username) {
+    return repository.findByUsername(username).isPresent();
+  }
+
   public User getUserByEmail(String email) {
     return repository
         .findByEmail(email)

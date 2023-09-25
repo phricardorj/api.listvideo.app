@@ -16,13 +16,13 @@ public class UserController implements UserControllerDoc {
 
   private final UserAuthenticationService userAuthenticationService;
 
+  @GetMapping("/check-username/{username}")
+  public boolean isUsernameRegistered(@PathVariable String username) {
+    return userAuthenticationService.isUsernameRegistered(username);
+  }
+
   @GetMapping("/{username}")
   public UserResponseDTO getUserByUsername(@PathVariable String username) {
     return userAuthenticationService.getUserResponseByUsername(username);
-  }
-
-  @GetMapping("/avatar/{username}")
-  public String getUserAvatarByUsername(@PathVariable String username) {
-    return username;
   }
 }

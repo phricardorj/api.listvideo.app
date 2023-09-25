@@ -10,6 +10,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
@@ -56,6 +57,10 @@ public class User implements UserDetails {
 
   @Column(name = "password", nullable = false)
   private String password;
+
+  @Lob
+  @Column(name = "avatar")
+  private String avatar;
 
   @Column(
       name = "is_account_activated",
